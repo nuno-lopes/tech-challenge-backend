@@ -30,6 +30,6 @@ export async function create(name: string, synopsis: string, releasedAt: Date, r
 
 /** @returns whether the ID was actually found */
 export async function update(id: number, name: string, synopsis: string, releasedAt: Date, runtime: number): Promise<boolean> {
-    const count = await knex.from('movie').where({ id }).update({ name })
+    const count = await knex.from('movie').where({ id }).update({ name, synopsis, releasedAt, runtime })
     return count > 0
 }
