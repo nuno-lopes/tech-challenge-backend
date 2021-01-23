@@ -1,16 +1,43 @@
-@baseUrl=http://localhost:8080/actors/{{id}}/movies
+@actorBaseUrl=http://localhost:8080/actors
+@actorId={{createActor.response.body.id}}
 
-@id=1
+# @name createActor
+POST {{actorBaseUrl}}
+Content-Type: application/json
 
-# @name getAllActorMovies
-GET {{baseUrl}}
+{
+  "name": "actor-{{$guid}}",
+  "bio": "This is a bio",
+  "bornAt": "1987-01-22"
+}
 ###
+
+@movieBaseUrl=http://localhost:8080/movies
+@movieId={{createMovie.response.body.id}}
+
+# @name createMovie
+POST {{movieBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "movie-{{$guid}}",
+  "synopsis": "This is a synopsis",
+  "releasedAt": "2021-01-22",
+  "runtime": 90
+}
+###
+
+@baseUrl=http://localhost:8080/actors/{{actorId}}/movies
 
 # @name create
 POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "movieId": 1
+  "movieId": {{movieId}}
 }
+###
+
+# @name getAllActorMovies
+GET {{baseUrl}}
 ###
