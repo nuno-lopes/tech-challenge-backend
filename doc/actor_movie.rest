@@ -1,0 +1,16 @@
+@baseUrl=http://localhost:8080/actors/{{id}}/movies
+
+@id=1
+
+# @name getAllActorMovies
+GET {{baseUrl}}
+###
+
+# @name create
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "movieId": 1
+}
+###
