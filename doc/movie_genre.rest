@@ -1,0 +1,43 @@
+
+@movieBaseUrl=http://localhost:8080/movies
+@movieId={{createMovie.response.body.id}}
+
+# @name createMovie
+POST {{movieBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "movie-{{$guid}}",
+  "synopsis": "This is a synopsis",
+  "releasedAt": "2021-01-22",
+  "runtime": 90
+}
+###
+
+@genreBaseUrl=http://localhost:8080/genres
+@genreId={{createGenre.response.body.id}}
+
+# @name createGenre
+POST {{genreBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "jose-{{$guid}}"
+}
+###
+
+
+@baseUrl=http://localhost:8080/movies/{{movieId}}/genres
+
+# @name create
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "genreId": {{genreId}}
+}
+###
+
+# @name getAllMovieGenres
+GET {{baseUrl}}
+###
