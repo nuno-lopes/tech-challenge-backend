@@ -23,11 +23,13 @@ const validateParamsId: RouteOptionsValidate = {
 }
 
 interface PayloadActorMovie {
-    movieId: number
+    movieId: number,
+    characterName: string
 }
 const validatePayloadActorMovie: RouteOptionsResponseSchema = {
     payload: joi.object({
         movieId: joi.number().required().min(1),
+        characterName: joi.string().required(),
     })
 }
 
@@ -42,6 +44,12 @@ export const actorMovieRoutes: ServerRoute[] = [{
     path: '/actors/{id}/movies',
     handler: post,
     options: { validate: { ...validateParamsId, ...validatePayloadActorMovie } },
+},
+{
+    method: 'GET',
+    path: '/actors/{id}/movies/characterNames',
+    handler: getAllActorCharacterNames,
+    options: { validate: validateParamsId },
 }]
 
 async function getAllActorMovies(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
@@ -51,12 +59,19 @@ async function getAllActorMovies(req: Request, _h: ResponseToolkit, _err?: Error
     return found || Boom.notFound()
 }
 
+async function getAllActorCharacterNames(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
+    const { id } = (req.params as ParamsId)
+
+    const found = await actorsMovies.listCharacterNames(id)
+    return found || Boom.notFound()
+}
+
 async function post(req: Request, h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
     const { id } = (req.params as ParamsId)
-    const { movieId } = (req.payload as PayloadActorMovie)
+    const { movieId, characterName } = (req.payload as PayloadActorMovie)
 
     try {
-        await actorsMovies.create(id, movieId)
+        await actorsMovies.create(id, movieId, characterName)
         const result = {
             id,
             path: `${req.route.path.replace('{id}', id.toString())}/${movieId}`

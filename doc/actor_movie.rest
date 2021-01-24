@@ -34,10 +34,15 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "movieId": {{movieId}}
+  "movieId": {{movieId}},
+  "characterName": "john-{{$guid}}"
 }
 ###
 
 # @name getAllActorMovies
 GET {{baseUrl}}
+###
+
+# @name getAllActorCharacterNames
+GET {{baseUrl}}/characterNames
 ###
