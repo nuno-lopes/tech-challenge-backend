@@ -1,4 +1,6 @@
+import { genre } from '../plugins/genres';
 import { knex } from '../util/knex'
+import { Genre } from './genres'
 
 export interface Actor {
     id: number
@@ -13,6 +15,18 @@ export function list(): Promise<Actor[]> {
 
 export function find(id: number): Promise<Actor> {
     return knex.from('actor').where({ id }).first()
+}
+
+export async function findFavoriteGenre(id: number): Promise<Genre> {
+    return knex.from('actor')
+        .join('actor_movie', 'actor_movie.actorId', 'actor.id')
+        .join('movie_genre', 'actor_movie.movieId', 'movie_genre.movieId')
+        .join('genre', 'genre.id', 'movie_genre.genreId')
+        .select('genre.name')
+        .where('actor.id', id)
+        .orderByRaw('count(actor_movie.movieId) desc')
+        .groupBy('genre.name')
+        .first()
 }
 
 /** @returns whether the ID was actually found */

@@ -1,0 +1,148 @@
+@actorBaseUrl=http://localhost:8080/actors
+@actorId={{createActor.response.body.id}}
+
+# @name createActor
+POST {{actorBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "actor-{{$guid}}",
+  "bio": "This is a bio",
+  "bornAt": "1987-01-22"
+}
+###
+
+@movieBaseUrl=http://localhost:8080/movies
+@movieId1={{createMovie1.response.body.id}}
+
+# @name createMovie1
+POST {{movieBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "movie-{{$guid}}",
+  "synopsis": "This is a synopsis",
+  "releasedAt": "2021-01-22",
+  "runtime": 90
+}
+###
+
+@movieId2={{createMovie2.response.body.id}}
+
+# @name createMovie2
+POST {{movieBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "movie-{{$guid}}",
+  "synopsis": "This is a synopsis",
+  "releasedAt": "2021-01-22",
+  "runtime": 90
+}
+###
+
+@movieId3={{createMovie3.response.body.id}}
+
+# @name createMovie3
+POST {{movieBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "movie-{{$guid}}",
+  "synopsis": "This is a synopsis",
+  "releasedAt": "2021-01-22",
+  "runtime": 90
+}
+###
+
+@actorMovieBaseUrl=http://localhost:8080/actors/{{actorId}}/movies
+
+# @name create1
+POST {{actorMovieBaseUrl}}
+Content-Type: application/json
+
+{
+  "movieId": {{movieId1}}
+}
+
+###
+
+# @name create2
+POST {{actorMovieBaseUrl}}
+Content-Type: application/json
+
+{
+  "movieId": {{movieId2}}
+}
+
+###
+
+# @name create3
+POST {{actorMovieBaseUrl}}
+Content-Type: application/json
+
+{
+  "movieId": {{movieId3}}
+}
+
+###
+
+@genreBaseUrl=http://localhost:8080/genres
+
+@genreId1={{createGenre1.response.body.id}}
+
+# @name createGenre1
+POST {{genreBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "jose-{{$guid}}"
+}
+###
+
+@genreId2={{createGenre2.response.body.id}}
+
+# @name createGenre2
+POST {{genreBaseUrl}}
+Content-Type: application/json
+
+{
+  "name": "luis-{{$guid}}"
+}
+###
+
+@movie1GenreBaseUrl=http://localhost:8080/movies/{{movieId1}}/genres
+
+# @name createMovieGenre1
+POST {{movie1GenreBaseUrl}}
+Content-Type: application/json
+
+{
+  "genreId": {{genreId1}}
+}
+###
+
+@movie2GenreBaseUrl=http://localhost:8080/movies/{{movieId2}}/genres
+
+# @name createMovieGenre2
+POST {{movie2GenreBaseUrl}}
+Content-Type: application/json
+
+{
+  "genreId": {{genreId2}}
+}
+###
+
+@movie3GenreBaseUrl=http://localhost:8080/movies/{{movieId3}}/genres
+
+# @name createMovieGenre3
+POST {{movie3GenreBaseUrl}}
+Content-Type: application/json
+
+{
+  "genreId": {{genreId2}}
+}
+###
+
+# @name getFavoriteGenre
+GET {{actorBaseUrl}}/{{actorId}}/favoriteGenre
