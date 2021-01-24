@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.raw(`
     ALTER TABLE actor_movie
     ADD characterName VARCHAR(50)
-  );`)
+  ;`)
 }
 
 
